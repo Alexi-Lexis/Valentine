@@ -1,89 +1,163 @@
-html_content = """
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
 <meta charset="UTF-8">
-<title>Valentine 💕</title>
+<title>Настя Коза Богиня 👑🐐</title>
 
 <style>
 body {
     margin: 0;
-    background: linear-gradient(to bottom, #ff758c, #ff7eb3);
     overflow: hidden;
-    font-family: Arial, sans-serif;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffd1ff, #fff0ac);
+    background-size: 400% 400%;
+    animation: gradientBG 8s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
 }
 
 h1 {
-    color: white;
-    font-size: 60px;
-    animation: fadeIn 3s ease-in-out;
-    z-index: 2;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.7); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-.heart {
     position: absolute;
-    color: red;
-    font-size: 24px;
-    animation: float 6s linear infinite;
+    font-size: 9vw;
+    color: white;
+    text-align: center;
+    text-shadow: 0 0 40px gold;
+    z-index: 2;
+    cursor: pointer;
+}
+
+#finalText {
+    position: absolute;
+    font-size: 10vw;
+    color: gold;
+    text-shadow: 0 0 40px white;
+    display: none;
+    animation: pulse 1.5s infinite;
+    z-index: 3;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+.shake {
+    animation: shakeScreen 0.2s infinite;
+}
+
+@keyframes shakeScreen {
+    0% { transform: translate(2px, 2px); }
+    50% { transform: translate(-2px, -2px); }
+    100% { transform: translate(2px, -2px); }
+}
+
+button {
+    position: absolute;
+    bottom: 30px;
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    cursor: pointer;
+    z-index: 4;
+}
+.goat {
+    position: absolute;
+    font-size: 30px;
+    animation: float linear infinite;
 }
 
 @keyframes float {
-    0% { transform: translateY(100vh); opacity: 1; }
-    100% { transform: translateY(-10vh); opacity: 0; }
-}
-
-iframe {
-    position: absolute;
-    bottom: 20px;
-    width: 300px;
-    height: 170px;
-    border-radius: 15px;
+    from {transform: translateY(100vh) rotate(0deg);}
+    to {transform: translateY(-10vh) rotate(360deg);}
 }
 </style>
 </head>
 
 <body>
 
-<h1>THANK YOU FOR ALL,<br>MY DEAR ❤️</h1>
+<h1 id="title">Настя коза 🐐</h1>
+<div id="finalText">БОГИНЯ 👑🐐</div>
+<button onclick="activateGoddess()">АКТИВУВАТИ КОЗУ-БОГИНЮ 👑🐐</button>
 
-<!-- YouTube music -->
-<iframe src="https://www.youtube.com/embed/5n9Z3aF0G6c?autoplay=1&loop=1&playlist=5n9Z3aF0G6c"
-allow="autoplay">
-</iframe>
+<audio id="goatSound">
+<source src="https://www.soundjay.com/animal/goat-bleating-01.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = Math.random() * 30 + 20 + "px";
-    heart.style.animationDuration = Math.random() * 3 + 3 + "s";
-    document.body.appendChild(heart);
+function createGoat(x, y, size) {
+    const goat = document.createElement("div");
+    goat.classList.add("goat");
+    goat.innerHTML = "🐐";
+    goat.style.left = x + "px";
+    goat.style.top = y + "px";
+    goat.style.fontSize = size + "px";
+    document.body.appendChild(goat);
 
     setTimeout(() => {
-        heart.remove();
-    }, 6000);
+        goat.remove();
+    }, 8000);
 }
 
-setInterval(createHeart, 300);
+function explodeText() {
+    const title = document.getElementById("title");
+    const rect = title.getBoundingClientRect();
+    const text = title.innerText;
+
+    title.style.visibility = "hidden";
+
+    for (let i = 0; i < text.length; i++) {
+        for (let j = 0; j < 15; j++) {
+            const x = rect.left + rect.width/2;
+            const y = rect.top + rect.height/2;
+            const size = 20 + Math.random() * 50;
+            createGoat(x, y, size);
+
+            const goat = document.querySelectorAll(".goat");
+            const lastGoat = goat[goat.length-1];
+            const tx = (Math.random() - 0.5) * 1000;
+            const ty = (Math.random() - 0.5) * 600;
+            lastGoat.style.transition = "transform 2s ease-out";
+            setTimeout(() => {
+                lastGoat.style.transform = translate(${tx}px, ${ty}px) rotate(720deg);
+            }, 10);
+        }
+    }
+}
+
+function activateGoddess() {
+    explodeText();
+    document.body.classList.add("shake");
+
+    const sound = document.getElementById("goatSound");
+    setInterval(() => {
+        sound.currentTime = 0;
+        sound.play();
+    }, 2000);
+
+    // Показуємо фінальний текст через 2 секунди
+    setTimeout(() => {
+        document.getElementById("finalText").style.display = "block";
+    }, 2000);
+
+    document.querySelector("button").remove();
+
+    // Постійні козочки хаотично
+    setInterval(() => {
+        createGoat(Math.random()*window.innerWidth, window.innerHeight, 20 + Math.random()*50);
+    }, 300);
+}
 </script>
 
 </body>
 </html>
-"""
-
-with open("valentine_music.html", "w", encoding="utf-8") as f:
-    f.write(html_content)
-
-print("💕")
