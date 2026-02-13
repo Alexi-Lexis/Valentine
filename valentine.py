@@ -86,4 +86,4 @@ setInterval(createHeart, 300);
 with open("valentine_music.html", "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print("Файл valentine_music.html створено 💕")
+print("💕")
